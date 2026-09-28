@@ -1,0 +1,83 @@
+name: Build macOS App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        arch: [osx-x64, osx-arm64]
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore macos/SSHProxyManager.csproj
+
+    - name: Publish macOS App
+      run: |
+        dotnet publish macos/SSHProxyManager.csproj \
+          -c Release \
+          -r ${{ matrix.arch }} \
+          --self-contained true \
+          -p:PublishSingleFile=true \
+          -o publish_temp
+
+    - name: Create .app Bundle
+      run: |
+        APP_NAME="SSHProxyManager"
+        mkdir -p "$APP_NAME.app/Contents/MacOS"
+        mkdir -p "$APP_NAME.app/Contents/Resources"
+
+        cp publish_temp/"$APP_NAME" "$APP_NAME.app/Contents/MacOS/$APP_NAME"
+        chmod +x "$APP_NAME.app/Contents/MacOS/$APP_NAME"
+
+        if [ -f "macos/icon.icns" ]; then
+          cp macos/icon.icns "$APP_NAME.app/Contents/Resources/icon.icns"
+        fi
+
+        cat > "$APP_NAME.app/Contents/Info.plist" << 'EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+          "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>CFBundleExecutable</key>
+            <string>SSHProxyManager</string>
+            <key>CFBundleIconFile</key>
+            <string>icon.icns</string>
+            <key>CFBundleIdentifier</key>
+            <string>com.mhs.sshproxymanager</string>
+            <key>CFBundleName</key>
+            <string>SSH Proxy Manager</string>
+            <key>CFBundleVersion</key>
+            <string>1.0.0</string>
+            <key>CFBundleShortVersionString</key>
+            <string>1.0.0</string>
+            <key>LSMinimumSystemVersion</key>
+            <string>10.13</string>
+            <key>NSHighResolutionCapable</key>
+            <true/>
+        </dict>
+        </plist>
+        EOF
+
+        rm -rf publish_temp
+
+    - name: Upload macOS Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: SSHProxyManager-${{ matrix.arch }}
+        path: SSHProxyManager.app
