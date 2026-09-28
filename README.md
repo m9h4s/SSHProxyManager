@@ -2,11 +2,11 @@
 
 # 🛡️ SSH Proxy Manager
 
-### یک تونل SSH و پروکسی SOCKS5 سبک، سریع و امن برای ویندوز و لینوکس
+### یک تونل SSH و پروکسی SOCKS5 سبک، سریع و امن برای ویندوز، لینوکس و مک‌او‌اس
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)](https://github.com/m9h4s/SSHProxyManager/releases)
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4.svg?style=for-the-badge&logo=dotnet)](https://dotnet.microsoft.com)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg?style=for-the-badge)](#-دانلود-و-نصب)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg?style=for-the-badge)](#-دانلود-و-نصب)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](LICENSE)
 
 **[English Documentation (Soon)]()** | **[گزارش باگ / Issues](https://github.com/m9h4s/SSHProxyManager/issues)**
@@ -42,6 +42,7 @@
 |------|---------|-------------|-------------|
 | 🪟 **Windows** | WPF (.NET 8) | XAML بومی ویندوز | Single File (بدون نیاز به نصب) |
 | 🐧 **Linux** | Avalonia UI (.NET 8) | Fluent Dark Theme | Single File (مستقل) |
+| 🍎 **macOS** | Avalonia UI (.NET 8) | Fluent Dark Theme | `.app` Bundle |
 
 ---
 
@@ -80,7 +81,10 @@
 
 1. **برای ویندوز:** فایل `.zip` را دانلود و استخراج کرده و روی `SSHProxyManager.exe` کلیک کنید.
 2. **برای لینوکس:** فایل `.tar.gz` را دانلود و استخراج کنید. سپس در ترمینال با دستور `chmod +x SSHProxyManager` به آن دسترسی اجرایی داده و آن را اجرا کنید.
-
+3. **برای مک‌او‌اس:** فایل `.zip` را دانلود و استخراج کنید. سپس در ترمینال (به دلیل محدودیت‌های امنیتی Gatekeeper) این دستور را اجرا کنید:
+   ```bash
+   xattr -d com.apple.quarantine SSHProxyManager.app
+   و سپس روی SSHProxyManager.app دابل‌کلیک کنید.
 ---
 
 ## 🚀 راهنمای استفاده
@@ -121,6 +125,7 @@
 
 - 🪟 [راهنمای کامپایل نسخه ویندوز](docs/BUILD_WINDOWS.md)
 - 🐧 [راهنمای کامپایل نسخه لینوکس](docs/BUILD_LINUX.md)
+- 🍎 [راهنمای کامپایل نسخه مک‌او‌اس](docs/BUILD_MACOS.md)
 
 ---
 
