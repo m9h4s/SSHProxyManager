@@ -1,0 +1,33 @@
+name: Build Linux App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore linux/SSHProxyManager.csproj
+
+    - name: Publish Linux App
+      run: dotnet publish linux/SSHProxyManager.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o publish_linux
+
+    - name: Upload Linux Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: SSHProxyManager-Linux-x64
+        path: publish_linux/SSHProxyManager
