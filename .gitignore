@@ -1,0 +1,25 @@
+# Build outputs
+bin/
+obj/
+publish_final/
+*.pdb
+*.exe
+*.dll
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+
+# Sensitive Data (Never upload config with passwords!)
+config.json
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
